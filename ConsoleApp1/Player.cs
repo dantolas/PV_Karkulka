@@ -13,7 +13,7 @@ namespace ConsoleApp1
 
         public Player()
         {
-            this.field = new pole("lvl",4);
+            this.field = new pole("lvl",4,5);
         }
 
 

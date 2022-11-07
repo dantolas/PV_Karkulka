@@ -10,21 +10,55 @@ namespace ConsoleApp1
     {
         
         public string lvlName;
-        public int size;
+        public int rows;
+        public int cols;
         public fieldItem start;
         public fieldItem end;
 
 
-        public pole(string lvlName, int size)
+        public pole(string lvlName, int rows, int cols)
         {
             this.lvlName = lvlName;
-            this.size = size;
+            this.rows = rows;
+            this.cols = cols;
         }
 
 
-        public void generateSqare()
+
+
+        public void generateLinked()
         {
-            fieldItem lastMade;
+            fieldItem? lastMade = null;
+
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < cols; i++)
+                {
+                    if (i == 0 && j == 0)
+                    {
+
+                        this.start = new fieldItem("Name:" + i + "," + j);
+                        this.end = start;
+                        lastMade = start;
+                        continue;
+                    }
+                    if(i == rows && j == cols)
+                    {
+                        lastMade.east = new fieldItem("Name:" + i + "," + j);
+                        this.end = lastMade.east;
+                        lastMade = lastMade.east;
+                    }
+
+                    lastMade.east = new fieldItem("Name:" + i + "," + j);
+                    lastMade = lastMade.east;
+                }
+            }
+        }
+
+
+        /*public void generateField()
+        {
+            fieldItem? lastMade = null;
 
             fieldItem? north;
             fieldItem? south;
@@ -36,25 +70,49 @@ namespace ConsoleApp1
                 {
                    if(i == 0 && j == 0)
                     {
-                        north = null;
 
-                    } 
+                        this.start = new fieldItem("Name:" + i + "," + j);
+                        this.end = start;
+                        lastMade = start;
+                        continue;
+                    }
+
+                   if(i == 0)
+                    {
+                        north = null;
+                        west = lastMade;
+
+
+                    }
                 }
             }
+        }*/
+
+        public override string ToString() {
+            String returnString = "";
+
+
+            fieldItem curr = start;
+            do
+            {
+                returnString += curr.ToString()+" -- ";
+                curr = curr.east;
+
+            } while (curr != end);
+
+            return returnString;
         }
 
-
-        
 
         internal class fieldItem
         {
 
 
             public string name;
-            public fieldItem north;
-            public fieldItem south;
-            public fieldItem west;
-            public fieldItem east;
+            public fieldItem? north;
+            public fieldItem? south;
+            public fieldItem? west;
+            public fieldItem? east;
 
             public fieldItem(string name, fieldItem north, fieldItem south, fieldItem west, fieldItem east)
             {
@@ -63,7 +121,21 @@ namespace ConsoleApp1
                 this.south = south;
                 this.west = west;
                 this.east = east;
-            }   
+            }
+
+            public fieldItem(string name)
+            {
+                this.name = name;
+                this.north = null;
+                this.south = null;
+                this.west = null;
+                this.east = null;
+            }
+
+            public override string ToString()
+            {
+                return name;
+            }
         }
     }
 }   
